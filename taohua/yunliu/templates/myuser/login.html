@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
 </head>
 <body>
-
+    {% if message %}
+    <div class="alert alert-warning">{{ message }}</div>
+    {% endif %}
+    <form action="{% url 'myuser:login' %}" method="post">
+        {% csrf_token %}
+        {{　login_form.as_p　}}
+        <button type="submit">提交</button>
+    </form>
+    <div>
+        <a href="{% url 'myuser:register' %}">没有账号请注册</a>
+    </div>
 </body>
 </html>
