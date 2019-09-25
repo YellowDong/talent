@@ -1,18 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-</head>
-<body>
-    {% if message %}
-    <div class="alert alert-warning">{{ message }}</div>
-    {% endif %}
-    <form action="{% url 'myuser:register' %}" method="post">
-        {% csrf_token %}
-        {{ register_form.as_p }}
-        <button type="submit">提交</button>
-    </form>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block head %}
+<title>Register</title>
+{% endblock head %}
+
+{% block body %}
+<div class="container">
+    <div class="col" style="text-align: center">
+        {% if message %}
+        <div class="alert alert-warning">{{ message }}</div>
+        {% endif %}
+        <form class="form-login" action="{% url 'myuser:register' %}" method="post">
+            {% csrf_token %}
+            {% for field in register_form %}
+            <div class="form-group" style="text-align: left">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+            {% endfor %}
+            <div style="text-align: left">
+                <button type="submit" class="btn btn-primary float-right">注册</button>
+                <a href="{% url 'myuser:login' %}" class="text-success" ><ins>已有账号直接登录</ins></a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{% endblock body %}
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Register</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    {% if message %}-->
+<!--    <div class="alert alert-warning">{{ message }}</div>-->
+<!--    {% endif %}-->
+<!--    <form action="{% url 'myuser:register' %}" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        {{ register_form.as_p }}-->
+<!--        <button type="submit">提交</button>-->
+<!--    </form>-->
+
+<!--</body>-->
+<!--</html>-->
