@@ -79,6 +79,7 @@ def register(request):
 	return render(request, 'myuser/register.html', locals())
 
 
+
 def logout(request):
 	if not request.session.get('is_login', None):
 		return redirect(reverse('myuser:login'))
