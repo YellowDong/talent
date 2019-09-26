@@ -1,13 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-</head>
-<body>
-<h3>Welcome {{request.session.user_name}}</h3>
-<div class="align-right">
-    <a href="{% url 'myuser:logout' %}">登出</a>
-</div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Index</title>
+{% endblock head %}
+
+
+{% block body %}
+
+{% endblock body %}
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Index</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h3>Welcome {{request.session.user_name}}</h3>-->
+<!--<div class="align-right">-->
+    <!--<a href="{% url 'myuser:logout' %}">登出</a>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
