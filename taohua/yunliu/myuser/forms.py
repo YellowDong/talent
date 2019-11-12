@@ -22,8 +22,8 @@ class RegisterForm(forms.ModelForm):
 		fields = ['username', 'email', 'sex', 'password', 'confirm_password', 'captcha']
 
 		widgets = {'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '用户名', 'autofocus': ''}),
-			       'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '邮箱'}),
-			       'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '密码'}),
-			       'confirm_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '确认密码'})
-			       }
+					'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '邮箱'}),
+					'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '密码'}),
+					'confirm_password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '确认密码'})
+				}
 		labels = {'username': '用户名', 'email': '邮箱', 'sex': '性别', 'password': '密码'}

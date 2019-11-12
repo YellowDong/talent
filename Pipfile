@@ -9,6 +9,14 @@ verify_ssl = true
 django = "==2.1.11"
 django-simple-captcha = "*"
 pipfile = "*"
+scrapy = "*"
+cffi = "*"
+demjson = "*"
+pyexecjs = "*"
+requests = "*"
+chardet = "*"
+opencv-contrib-python = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
