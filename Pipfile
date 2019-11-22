@@ -15,8 +15,8 @@ demjson = "*"
 pyexecjs = "*"
 requests = "*"
 chardet = "*"
-opencv-contrib-python = "*"
 pillow = "*"
+opencv-python = "*"
 
 [requires]
 python_version = "3.7"
