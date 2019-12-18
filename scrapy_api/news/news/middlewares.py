@@ -6,6 +6,17 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import requests
+import random
+import logging
+import sys
+import json
+sys.path.append("/home/sd/workspace/talent")
+
+from utils import chaojiying
+from scrapy.http import HtmlResponse
+
+logger = logging.getLogger(__name__)
 
 
 class NewsSpiderMiddleware(object):
@@ -60,15 +71,90 @@ class NewsDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
+    def __init__(self, username, password, softid, codetype):
+        self.uuid = self.get_uuid()
+        self.headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36',
+                        'Host': 'zxgk.court.gov.cn',
+                        'Referer': 'http://zxgk.court.gov.cn/zhixing/'}
+        self.username = username
+        self.password = password
+        self.softid = softid
+        self.codetype = codetype
+        self.session = requests.session()
+        self.chaoji_client = chaojiying.Chaojiying_Client(self.username, self.password.encode(), self.softid)
 
     @classmethod
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.
-        s = cls()
+        s = cls(
+            crawler.settings.get('USERNAME'),
+            crawler.settings.get('PASSWORD'),
+            crawler.settings.get('SOFTID'),
+            crawler.settings.get('CODETYPE')
+        )
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s
 
+    def get_uuid(self):
+        from uuid import uuid4
+        uuid = str(uuid4()).replace('-', '')
+        return uuid
+
+    def get_captcha(self):
+        randnum = random.random()
+        headers = self.headers
+        uuid = self.uuid
+        try:
+            resp = self.session.get(f"http://zxgk.court.gov.cn/zhixing/captcha.do?captchaId={uuid}&random={randnum}", headers=headers)
+            if resp.status_code == 200:
+                yzm = self.chaoji_client.PostPic(resp.content, self.codetype)
+                if yzm['err_str'] == 'OK':
+                    return yzm['pic_str']
+        except Exception as e:
+            return e
+
     def process_request(self, request, spider):
+        pname = request.meta.get("pname", "陈亮")
+        uuid = self.uuid
+        captcha = self.get_captcha()
+        headers = self.headers
+        print(pname, uuid, captcha)
+        # logger.debug(pname, uuid, captcha)
+        # request.headers['User-Agent'] = headers['User-Agent']
+        # formdata = json.loads(request.body)
+        # formdata['pName'] = pname
+        # formdata['pCode'] = captcha
+        # formdata['captchaId'] = uuid
+        # print(formdata)
+        # resp = self.session.post(request.url, data=formdata, headers=headers)
+        # print(resp)
+
+        # print(resp.json())
+        #request.body = json.dumps(formdata)
+        formdata = {
+            'pName': pname,
+            'pCardNum': '',
+            'selectCourtId': '0',
+            'pCode': captcha,
+            'captchaId': uuid,
+            'searchCourtName': '全国法院（包含地方各级法院）',
+            'selectCourtArrange': '1',
+            'currentPage': '1'
+        }
+        resp = self.session.post(request.url, data=formdata, headers=headers)
+        # request.formdata['captchaId'] = uuid
+        # request.formdata['pCode'] = captcha
+        # request.formdata['pName'] = pname
+        # print(request.url)
+        # resp = requests.post(request.url, data=form_data, headers=headers)
+        # print(resp.status_code)
+        # print(resp)
+        # print('+++++++++')
+        # print(resp.json())
+        # print('_++_+_+_+_')
+        # #logger.debug(pname, uuid, captcha, resp.text)
+        # print(resp.text, '==============')
+        return HtmlResponse(url=request.url, body=resp.content, request=request, encoding='utf-8', status=resp.status_code, uuid=uuid, captcha=captcha, formdata=formdata)
         # Called for each request that goes through the downloader
         # middleware.
 
@@ -78,7 +164,7 @@ class NewsDownloaderMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        return None
+        # return None
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.

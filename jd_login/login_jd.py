@@ -16,6 +16,7 @@ headers = {
 
 session = requests.session()
 
+
 def getpassword(pwd):
     with open('login.js') as f:
         print(execjs.get().name)

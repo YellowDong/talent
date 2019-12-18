@@ -17,6 +17,7 @@ requests = "*"
 chardet = "*"
 pillow = "*"
 opencv-python = "*"
+scrapyrt = "*"
 
 [requires]
 python_version = "3.7"
