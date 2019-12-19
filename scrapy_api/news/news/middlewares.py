@@ -16,6 +16,8 @@ sys.path.append("/home/sd/workspace/talent")
 from utils import chaojiying
 from scrapy.http import HtmlResponse
 
+from urllib.parse import urlencode
+
 logger = logging.getLogger(__name__)
 
 
@@ -71,7 +73,7 @@ class NewsDownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
-    def __init__(self, username, password, softid, codetype):
+    def __init__(self, username, password, softid, codetype, captcha_url):
         self.uuid = self.get_uuid()
         self.headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36',
                         'Host': 'zxgk.court.gov.cn',
@@ -82,15 +84,22 @@ class NewsDownloaderMiddleware(object):
         self.codetype = codetype
         self.session = requests.session()
         self.chaoji_client = chaojiying.Chaojiying_Client(self.username, self.password.encode(), self.softid)
+        self.captcha_url = captcha_url
+        self.captcha = self.get_captcha()
 
     @classmethod
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.
+        settings = crawler.settings
+        chaojiying = settings.get("CHAO_JI_YING", {})
+        zhixing = settings.get("ZHIXING", {})
+
         s = cls(
-            crawler.settings.get('USERNAME'),
-            crawler.settings.get('PASSWORD'),
-            crawler.settings.get('SOFTID'),
-            crawler.settings.get('CODETYPE')
+            username=chaojiying.get("username"),
+            password=chaojiying.get("password"),
+            softid=chaojiying.get("softid"),
+            codetype=chaojiying.get("codetype"),
+            captcha_url=zhixing.get("captcha_url")
         )
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s
@@ -104,8 +113,14 @@ class NewsDownloaderMiddleware(object):
         randnum = random.random()
         headers = self.headers
         uuid = self.uuid
+        base_url = self.captcha_url
+        payload = {
+            "captchaId": uuid,
+            "random": randnum
+        }
+        url = base_url + urlencode(payload)
         try:
-            resp = self.session.get(f"http://zxgk.court.gov.cn/zhixing/captcha.do?captchaId={uuid}&random={randnum}", headers=headers)
+            resp = self.session.get(url, headers=headers)
             if resp.status_code == 200:
                 yzm = self.chaoji_client.PostPic(resp.content, self.codetype)
                 if yzm['err_str'] == 'OK':
@@ -114,47 +129,24 @@ class NewsDownloaderMiddleware(object):
             return e
 
     def process_request(self, request, spider):
-        pname = request.meta.get("pname", "陈亮")
-        uuid = self.uuid
-        captcha = self.get_captcha()
-        headers = self.headers
-        print(pname, uuid, captcha)
-        # logger.debug(pname, uuid, captcha)
-        # request.headers['User-Agent'] = headers['User-Agent']
-        # formdata = json.loads(request.body)
-        # formdata['pName'] = pname
-        # formdata['pCode'] = captcha
-        # formdata['captchaId'] = uuid
-        # print(formdata)
-        # resp = self.session.post(request.url, data=formdata, headers=headers)
-        # print(resp)
+        if request.method == 'POST':
+            formdata = json.loads(request.body)
+            if formdata.get("currentPage") == '1':
+                pname = request.meta.get("pname")
+                if not pname:
+                    return HtmlResponse(url=request.url, request=request)
+                uuid = self.uuid
+                captcha = self.captcha
+                headers = self.headers
+                print(pname, uuid, captcha)
 
-        # print(resp.json())
-        #request.body = json.dumps(formdata)
-        formdata = {
-            'pName': pname,
-            'pCardNum': '',
-            'selectCourtId': '0',
-            'pCode': captcha,
-            'captchaId': uuid,
-            'searchCourtName': '全国法院（包含地方各级法院）',
-            'selectCourtArrange': '1',
-            'currentPage': '1'
-        }
-        resp = self.session.post(request.url, data=formdata, headers=headers)
-        # request.formdata['captchaId'] = uuid
-        # request.formdata['pCode'] = captcha
-        # request.formdata['pName'] = pname
-        # print(request.url)
-        # resp = requests.post(request.url, data=form_data, headers=headers)
-        # print(resp.status_code)
-        # print(resp)
-        # print('+++++++++')
-        # print(resp.json())
-        # print('_++_+_+_+_')
-        # #logger.debug(pname, uuid, captcha, resp.text)
-        # print(resp.text, '==============')
-        return HtmlResponse(url=request.url, body=resp.content, request=request, encoding='utf-8', status=resp.status_code, uuid=uuid, captcha=captcha, formdata=formdata)
+                formdata['pName'] = pname
+                formdata['pCode'] = captcha
+                formdata['captchaId'] = uuid
+
+                resp = self.session.post(request.url, data=formdata, headers=headers)
+
+                return HtmlResponse(url=request.url, body=resp.content, request=request, encoding='utf-8', status=resp.status_code)
         # Called for each request that goes through the downloader
         # middleware.
 
@@ -164,10 +156,22 @@ class NewsDownloaderMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        # return None
+        return None
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
+        if not request.meta.get('pname'):
+            pname = response.meta.get('pname')
+            data = json.loads(request.body)
+            data['pName'] = pname
+            return request
+        else:
+            data = json.loads(request.body)
+          # request.meta.get('pname')
+            data['pCode'] = self.captcha
+            data['captchaId'] = self.uuid
+            response.meta["data"] = data
+
 
         # Must either;
         # - return a Response object

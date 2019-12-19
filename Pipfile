@@ -18,6 +18,8 @@ chardet = "*"
 pillow = "*"
 opencv-python = "*"
 scrapyrt = "*"
+flask = "*"
+markupsafe = "*"
 
 [requires]
 python_version = "3.7"

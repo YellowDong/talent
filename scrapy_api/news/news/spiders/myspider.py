@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
+# import json
+# import os
+# from urllib.parse import urlencode
+
+
 import json
-import os
+import logging
 from urllib.parse import urlencode
+
 
 import scrapy
-import demjson
-import random
-import json
-from urllib.parse import urlencode
 
-from .. import settings
+from ..settings import ZHIXING
 from ..items import NewsItem
 
 
 base_path = '/home/sd/workspace/talent/'
+logger = logging.getLogger(__name__)
 
 
 class MyspiderSpider(scrapy.Spider):
@@ -22,7 +25,8 @@ class MyspiderSpider(scrapy.Spider):
     # start_urls = ['http://zxgk.court.gov.cn/zhixing/searchBzxr.do']
 
     def start_requests(self):
-        url = "http://zxgk.court.gov.cn/zhixing/searchBzxr.do"
+        # url = "http://zxgk.court.gov.cn/zhixing/searchBzxr.do"
+        url = ZHIXING.get("page_url")
         form_data = {
             'pName': '',
             'pCardNum': '',
@@ -33,28 +37,35 @@ class MyspiderSpider(scrapy.Spider):
             'selectCourtArrange': '1',
             'currentPage': '1'
         }
-        yield scrapy.Request(url=url, method='POST', body=json.dumps(form_data))
+        yield scrapy.Request(url=url, method='POST', body=json.dumps(form_data), dont_filter=True)
 
     def parse(self, response):
         resp = json.loads(response.text)
-        print(resp)
         data = resp[0]
         results = data.get("result")
-        base_url = 'http://zxgk.court.gov.cn/zhixing/newdetail?'
-        captcha = response.captcha
-        uuid = response.uuid
+        # base_url = 'http://zxgk.court.gov.cn/zhixing/newdetail?'
+        myrequest = response.request
+        print(response.meta, '++++++')
+        base_url = ZHIXING.get("detail_url")
+        captcha = myrequest.meta.get("captcha")
+        print('******', myrequest.meta)
+        print('&&&&&', myrequest.cb_kwargs)
+        print('_+_+_+_+', captcha)
+        uuid = myrequest.meta.get("uuid")
         for result in results:
             case_id = result.get("id", "")
             payload = {"id": case_id, "j_captcha": captcha, "captchaId": uuid}
             url = base_url + urlencode(payload)
             yield scrapy.Request(url, callback=self.parse_details)
 
+        # iter all the pages content
         total_pages = data.get("totalPage")
         while total_pages > 1:
+            logger.info(f"now crawl the {total_pages} page")
             url = response.url
-            form_data = response.formdata
+            form_data = myrequest.meta
             form_data['currentPage'] = str(total_pages)
-            yield scrapy.Request(url, body=json.dumps(form_data), callback=self.parse)
+            yield scrapy.Request(url, method='POST', body=json.dumps(form_data), meta=form_data, callback=self.parse)
             total_pages -= 1
 
     def parse_details(self, response):

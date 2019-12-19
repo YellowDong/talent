@@ -90,11 +90,25 @@ DOWNLOADER_MIDDLEWARES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 
+
 IS_WRITE_JSON = True
 IS_STORE_DATABASE = True
 
-USERNAME = 'fangbangbang'
-PASSWORD = 'fbb123456'
-SOFTID = '9a07348741b058d1e2ff9d3abcec6256'
-CODETYPE = 1902
-LEN_MIN = 4
+# USERNAME = 'fangbangbang'
+# PASSWORD = 'fbb123456'
+# SOFTID = '9a07348741b058d1e2ff9d3abcec6256'
+# CODETYPE = 1902
+# LEN_MIN = 4
+ZHIXING = {
+   "page_url": "http://zxgk.court.gov.cn/zhixing/searchBzxr.do",
+   "detail_url": "http://zxgk.court.gov.cn/zhixing/newdetail?",
+   "captcha_url": "http://zxgk.court.gov.cn/zhixing/captcha.do?"
+}
+
+CHAO_JI_YING = {
+   "username": "fangbangbang",
+   "password": "fbb123456",
+   "softid": "9a07348741b058d1e2ff9d3abcec6256",
+   "codetype": 1902,
+   "len_min": 4
+}
