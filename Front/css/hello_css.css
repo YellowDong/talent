@@ -1,0 +1,17 @@
+/*css样式有三种，内联式，嵌入式，外部引用*/
+/*内联式是直接写在html开始标签中，用style属性；嵌入式是写在当前文件中的style标签<style type="text/css">这里写css</stype>; 外部css是写在
+一个单独的以.css结尾的文件中，然后在html文件中通过<link href="css文件路径" rel="stylesheet" type="text/css">引入
+ */
+
+/*三种形式的css的优先级遵循就近原则，内联式>嵌入式>外部引用,注意嵌入>外部的一个前提就是嵌入是写在外部引用的后面*/
+/*注意类选择器和ID选择器的区别，ID选择器只能用一次，且仅一次*/
+
+/*总结：>作用于元素的第一代后代，空格作用于元素的所有后代。*/
+
+伪类选择器a:hover{} a:active{} a:
+
+p{
+    color: red;
+    font-size: 15px;
+
+}

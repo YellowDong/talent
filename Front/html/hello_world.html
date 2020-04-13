@@ -45,7 +45,7 @@
     <p>hr标签是水平分割线</p>
     <hr/>
 <!--空格键要使用&nbsp-->
-    <p>html中是忽略空格的平时我们输入空格键都是被忽略的    假如你想假如空格键就必须使用\&nbsp&nbsp &nbsp &nbsp就像这样，输入</p>
+    <p>html中是忽略空格的平时我们输入空格键都是被忽略的    假如你想假如空格键就必须使用'& nbsp'&nbsp &nbsp &nbsp就像这样，输入</p>
     <hr />
     <h3>这是一个表格</h3>
     <br>
@@ -74,11 +74,65 @@
         </tr>
 
     </table>
-
-    <thead>
-        <th>科目</th>
-        <th>分数</th>
-    </thead>
+    <table border="1">
+        <thead>
+            <th>科目</th>
+            <th>分数</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>语文</td>
+                <td>99</td>
+            </tr>
+            <tr>
+                <td>数学</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>英语</td>
+                <td>100</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <td>合计</td>
+            <td>299</td>
+        </tfoot>
+    </table>
+<hr />
+<!--    表单标签 name标签为文本框命名，以备后台程序使用，value属性提供默认值 placeholder属性为占位符，是在用户输入前起到提示作用-->
+<!--    lable标签的for属性必须是与他关联的标签的id属性值,如下面的input的id为username的lable的for属性也为username-->
+    <form method="post" action="">
+        <label for="username">用户名:</label>
+        <input type="text" name="username" id="username" placeholder="请输入用户名"/>
+        <label for="password" name="password">密码:</label>
+        <input type="password" name="password" id="password" placeholder="请输入密码"/>
+        <label for="num" name="number">数字输入框:</label>
+        <input type="number" name="number" id="num" placeholder="请输入数字">
+        <label for="url">网址输入框:</label>
+        <input type="url" name="url" id="url" placeholder="网址输入框">
+        <br>
+<!--        注意，在单选按钮里，同一组的name属性必须一致 多选框无要求-->
+        <input type="radio" name="radiolove" value="喜欢" checked="checked"/>篮球
+        <input type="radio" name="radiolove" value="不喜欢" />爬山
+        <input type="radio" name="radiolove" value="无所谓" />游泳
+        <br>
+        <input type="checkbox" name="checkboxlove1" value="apple" checked="checked" />苹果
+        <input type="checkbox" name="checkboxlove2" value="orange" checked="checked" />橘子
+        <input type="checkbox" name="checkboxlove3" value="banana" />香蕉
+        <br>
+<!--        使用select标签和option标签实现下拉框-->
+        <select>
+            <option value="足球" selected="selected">足球</option>
+            <option value="篮球">篮球</option>
+            <option value="乒乓球">乒乓球</option>
+        </select>
+        <br>
+<!--        当type为submit时被设置为提交按钮-->
+        <input type="submit" value="提交">
+        <br>
+<!--        重置按钮-->
+        <input type="reset" value="重置">
+    </form>
 
 </div>
 
