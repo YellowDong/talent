@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <style>
+        h1{
+            color: #930;
+            text-align: center;
+        }
+        span{
+            color: blue;
+        }
+        footer{
+            color: black;
+            font-size: 25px;
+        }
+    </style>
+</head>
+<body>
+<h1>Hello World !</h1>
+<!--span标签并没有语义，是为了定义认定字体的样式-->
+<p>Hellow World <span>MY BABY</span></p>
+
+<!--div标签是块标签，想当一个容器-->
+<div>
+    <ol class="animal">
+        <li>monkey</li>
+        <li><span>dog</span></li>
+        <li>cat</li>
+    </ol>
+<!--    ul标签是无序标签，ol标签是有序标签-->
+    <ul class="fruit">
+<!--        超链接标签a,属性target默认是_self标识在当前页面打开，如果是_bank表示在新的页面打开-->
+        <li><a href="https://www.sina.com.cn" target="_blank" title="前往新浪">apple</a>></li>
+        <li>orange</li>
+        <li>banana</li>
+    </ul>
+    <ol class="phone">
+        <li>HUAWEI</li>
+        <li>Apple</li>
+        <li>XiaoMI</li>
+    </ol>
+
+    <p>hr标签是水平分割线</p>
+    <hr/>
+<!--空格键要使用&nbsp-->
+    <p>html中是忽略空格的平时我们输入空格键都是被忽略的    假如你想假如空格键就必须使用\&nbsp&nbsp &nbsp &nbsp就像这样，输入</p>
+    <hr />
+    <h3>这是一个表格</h3>
+    <br>
+<!--    table表示表格，th表示表头，字体会自动加粗，tr表示行，td表示单元格，一行中有几个td就表示有几列-->
+    <table border="1">
+        <caption>企业员工通讯录</caption>
+        <tr>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>职业</th>
+        </tr>
+        <tr>
+            <td>张三</td>
+            <td>男</td>
+            <td>程序员</td>
+        </tr>
+        <tr>
+            <td>李四</td>
+            <td>男</td>
+            <td>产品经理</td>
+        </tr>
+        <tr>
+            <td>王五</td>
+            <td>女</td>
+            <td>美工</td>
+        </tr>
+
+    </table>
+
+    <thead>
+        <th>科目</th>
+        <th>分数</th>
+    </thead>
+
+</div>
+
+<!--侧边栏标签-->
+<aside>我是一个侧边栏</aside>
+
+<!--src标识图像的位置 alt是当图片下载失败时的替换描述性文本 title是对图片的描述-->
+<img src="http://img1.sycdn.imooc.com/52da54ed0001ecfa04120172.jpg" alt="D:\Program Files\JetBrains\PyCharm 2020.1\bin\pycharm.ico" title="电影介绍" />
+
+</body>
+
+<!--换行标签  br标签是一个空标签，没有内容，空标签只需要写一个开始标签，类似的还有<hr /> <img /> -->
+<br />
+<!--底部标签-->
+<footer>我是一个底部标签</footer>
+</html>
