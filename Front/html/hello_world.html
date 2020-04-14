@@ -146,6 +146,21 @@
 
 <!--换行标签  br标签是一个空标签，没有内容，空标签只需要写一个开始标签，类似的还有<hr /> <img /> -->
 <br />
+
+<!--布局模型中的浮动模型，可以让两个块状元素实现并排显示-->
+<style type="text/css">
+    div.float{
+        border:2px solid red;
+        width:200px;
+        height:200px;
+        float: left; /*关键是通过这个float属性实现两个块状元素并排显示*/
+    }
+</style>
+<div class="float">div1</div>
+<div class="float">div2</div>
+
+<br />
+
 <!--底部标签-->
 <footer>我是一个底部标签</footer>
 </html>
