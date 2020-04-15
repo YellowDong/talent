@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>盒子练习</title>
+    <style type="text/css">
+        #big div{
+            border: 3px solid black;
+            height: 100px;
+            /*margin:0 auto;*/
+        }
+        #big{
+            width: 800px;
+            margin: 0 auto;
+            border: 2px solid red;
+        }
+        /*#one{*/
+        /*    border: 3px solid black;*/
+        /*    height: 100px;*/
+        /*    text-align: center;*/
+        /*    width: 150px;*/
+
+        /*}*/
+        #div1L, #divR,#div3C,#div3L,#div3R{
+            border: 2px solid black;
+            text-align: center;
+            line-height: 100px;
+            display: inline-block;
+        }
+        #div1L,#div3R{
+            width: 150px;
+        }
+        #divR{
+            width: 200px;
+        }
+        #div3C,#div3L{
+            width: 100px;
+        }
+        #two{
+            margin-left: 100px;
+        }
+        #four{
+            margin-right: 200px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="big">
+    <div id="one">
+        <div id="div1L"><a href="https://www.baidu.com">div1L</a></div>
+        <div id="divR">divR</div>
+    </div>
+    <div id="two"></div>
+    <div id="three">
+        <div id="div3L">div3L</div>
+        <div id="div3C">div3C</div>
+        <div id="div3R">div3R</div>
+    </div>
+    <div id="four"></div>
+
+</div>
+
+</body>
+</html>

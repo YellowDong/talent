@@ -61,6 +61,6 @@ div.box3{
 
 /*使用justify-content属性设置横轴排列方式 justify-content: flex-start(左对齐) | flex-end(右对齐) | center(居中) | space-between(两边对齐) | space-around(每个项目两侧的间隔相等);*/
 
-行内元素水平居中可以通过设置父级元素为text-align:center实现
+/*行内元素水平居中可以通过设置父级元素为text-align:center实现*/
 
-定宽块级元素水平居中可以设置左右margin为auto(上下margin任意值)
+/*定宽块级元素水平居中可以设置左右margin为auto(上下margin任意值)*/
