@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>events</title>
+    <style type="text/css">
+        p.highlight{
+            background: yellow;
+        }
+    </style>
+    <script src="../jquery-3.5.0.js"></script>
+<!--    events include mouse events, keyboard events, form events, document/window events-->
+<!--    mouse events: click(), dblclick() and so on-->
+
+<!--    click p tag text will hide the text-->
+    <script>
+        $(document).ready(
+            function () {
+                $("p").click(
+                    function () {
+                        $(this).slideUp();
+                    }
+                )
+            }
+        )
+    </script>
+
+<!--    double click will hide text-->
+    <script>
+        $(document).ready(
+            function () {
+                $("#hide").dblclick(
+                    function () {
+                        $(this).slideUp()
+                    }
+                )
+            }
+        )
+    </script>
+
+<!--    keypress method exclude some keys such as Shift, Esc, Backspace or Delete, Arrow keys etc. trigger keydown events but not keypress events.-->
+<!--    keyup method count as keyboard is released keydown method is another face-->
+    <script>
+        $(document).ready(
+            function () {
+                i = 0;
+                $("input[type='text']").keypress(
+                    function () {
+                        $("span").text(i += 1);
+                        $("p").show().fadeOut(); //淡出效果隐藏被选中的元素
+                    }
+                )
+            }
+        )
+    </script>
+
+
+<!--    when the mouse cursor enter element it will highlight remove will be removed the hover method same as mouseenter and mouseleave both method-->
+    <script>
+        $(document).ready(
+            function () {
+                $("p").hover(
+                    function () {
+                        $(this).addClass("highlight");
+                    },
+                    function () {
+                        $(this).removeClass("highlight");
+                    }
+                );
+            }
+        );
+    </script>
+
+<!--    form event control change will alert your select-->
+<!--    form events: change, focus, blur, submit-->
+    <script>
+        $(document).ready(
+            function () {
+                $("select").change(
+                    function () {
+                        var selectoption = $(this).find(":selected").val();
+                        alert("you select " + selectoption)
+                    }
+                )
+            }
+        )
+    </script>
+
+<!--    document/window events: ready(), resize(), scroll(), -->
+    <script>
+        $(document).ready(function() {
+            $(window).resize(
+                function () {
+                    $(window).bind("resize", function () {
+                        $("p").text("window width:" + $(window).width() + "window height:" + $(window).height());
+                        $("")
+                    })
+                }
+            )
+            }
+        )
+    </script>
+</head>
+<body>
+<button type="button">button</button>
+<p>i am a paragraph</p>
+<span id="hide">i am a inline text</span>
+<input name="input" type="text">
+
+<div id="select">
+    <label>ball:</label>
+    <select>
+        <option value="football">football</option>
+        <option value="basketball">basketball</option>
+        <option value="pingpong">pingpong</option>
+    </select>
+</div>
+
+</body>
+</html>
