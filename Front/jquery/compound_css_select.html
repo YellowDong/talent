@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>compound css</title>
+    <script src="../jquery-3.5.0.js"></script>
+    <script>
+        $(document).ready(
+            function () {
+                $(".mark>li").css("background", 'yellow');
+                // $("#mark").css("background", "yellow");
+                $("ul li").css("background", "yellow");
+                $("#mark>li").css("background", "red");
+                $("#mark span").css("background", "yellow");
+                $("ul.mark >li").css("background", "green");
+                $("p >a").css("background", "yellow");
+                $("p.mark").css("background", "yellow")
+
+
+            }
+
+        )
+    </script>
+</head>
+<body>
+<p>This is a paragraph.</p>
+<p class="mark">This is another paragraph.</p>
+<p>This is one more paragraph.</p>
+<ul>
+    <li>List item one</li>
+    <li>List item two</li>
+    <li>List item three</li>
+</ul>
+<ul id="mark">
+    <li>List item one</li>
+    <li>List <span>item two</span></li>
+    <li>List item three</li>
+</ul>
+<ul class="mark">
+    <li>List item one</li>
+    <li>List item two</li>
+    <li>List item three</li>
+</ul>
+<p>Go to <a href="https://www.tutorialrepublic.com/" target="_blank">Home page</a></p>
+</body>
+</html>

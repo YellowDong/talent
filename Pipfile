@@ -20,6 +20,8 @@ opencv-python = "*"
 scrapyrt = "*"
 flask = "*"
 markupsafe = "*"
+rsa = "*"
+pycryptodome = "*"
 
 [requires]
 python_version = "3.7"
