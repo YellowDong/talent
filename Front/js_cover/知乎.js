@@ -1,5 +1,4 @@
-import {vendor_ba70ddaa2bce5b55c642} from './zhihu1';
-window = {};
+
 !function(e) {
     function t(t) {
         for (var n, r, o = t[0], a = t[1], s = 0, c = []; s < o.length; s++)
